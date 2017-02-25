@@ -37,12 +37,16 @@ void  moves(int n)
 {
     std::vector<Mobable> moving;
 
+    
+    
     auto move_start = std::chrono::system_clock::now();
+    
+
     
     for (int i=0; i<n ; ++i)
     {
-        
-        moving.push_back(Mobable(2));
+        Mobable ss(33);
+        moving.push_back(std::move(ss));
         
     }
     
@@ -57,12 +61,14 @@ void copies(int n)
 {
     std::vector<Unmobable>copying;
     
+    
+    
     auto copy_start = std::chrono::system_clock::now();
     
     for (int i=0; i<n ; ++i)
     {
-        
-        copying.push_back(Unmobable(3));
+        Unmobable ss(33);
+        copying.push_back(ss);
         
     }
     
@@ -75,7 +81,7 @@ void copies(int n)
 
 int main(int argc, const char * argv[]) {
 
-    int n = 10000000;
+    int n = 30000000;
     
     moves(n);
     copies(n);
