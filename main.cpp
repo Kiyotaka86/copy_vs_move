@@ -11,6 +11,7 @@
 #include <chrono>
 #include <utility>
 
+//class having no move constractor
 class Unmobable
 {
     int *a;
@@ -21,6 +22,7 @@ public:
     Unmobable& operator = (const Unmobable &co) { std::swap(*a,*co.a); return *this;};
 };
 
+//class having move constractor
 class Mobable
 {
     int *a;
@@ -37,17 +39,14 @@ public:
 void  moves(int n)
 {
     std::vector<Mobable> moving;
-
-    
     
     auto move_start = std::chrono::system_clock::now();
     
-
     
     for (int i=0; i<n ; ++i)
     {
-        Mobable ss(33);
-        moving.push_back(std::move(ss));
+        
+        moving.emplace_back(Mobable(i));
         
     }
     
@@ -62,13 +61,13 @@ void copies(int n)
 {
     std::vector<Unmobable>copying;
     
-    
+
     
     auto copy_start = std::chrono::system_clock::now();
     
     for (int i=0; i<n ; ++i)
     {
-        Unmobable ss(33);
+        Unmobable ss(i);
         copying.push_back(ss);
         
     }
@@ -80,12 +79,18 @@ void copies(int n)
     std::cout<< "copy takes: " << copy_msec <<std::endl;
 }
 
+
 int main(int argc, const char * argv[]) {
 
-    int n = 30000000;
+    int n = 10000000;
     
     moves(n);
     copies(n);
+    moves(n);
+    copies(n);
+    moves(n);
+    copies(n);
+    
     
     return 0;
 }
