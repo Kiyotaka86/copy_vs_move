@@ -67,8 +67,7 @@ void copies(int n)
     
     for (int i=0; i<n ; ++i)
     {
-        Unmobable ss(i);
-        copying.push_back(ss);
+      copying.emplace_back(Unmobable(i));
         
     }
     
