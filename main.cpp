@@ -19,6 +19,7 @@ public:
     Unmobable(int k){ a = new int(k);} ;
     ~Unmobable(){delete[] a;};
     Unmobable(const Unmobable &co){ a = new int; *a = *co.a;};
+    //explicit copy constructor prohibits implicit move constructor
     Unmobable& operator = (const Unmobable &co) { std::swap(*a,*co.a); return *this;};
 };
 
@@ -31,8 +32,8 @@ public:
     ~Mobable(){delete[] a;};
     Mobable(const Mobable &co){ a = new int; *a = *co.a;};
     Mobable& operator = (const Mobable &co) { std::swap(*a,*co.a); return *this;};
-    Mobable(Mobable&& mov){ a = mov.a; mov.a = nullptr; }
-    Mobable& operator= (Mobable&& mo){a = mo.a; mo.a = nullptr; return *this; };
+    Mobable(Mobable&& mov){ a = std::move(mov.a); mov.a = nullptr; }
+    Mobable& operator= (Mobable&& mo){a = std::move(mo.a); mo.a = nullptr; return *this; };
 };
 
 
@@ -61,8 +62,6 @@ void copies(int n)
 {
     std::vector<Unmobable>copying;
     
-
-    
     auto copy_start = std::chrono::system_clock::now();
     
     for (int i=0; i<n ; ++i)
@@ -81,8 +80,13 @@ void copies(int n)
 
 int main(int argc, const char * argv[]) {
 
-    int n = 10000000;
+    int n = 1000000;
     
+    //always do several times to optimize the result
+    moves(n);
+    copies(n);
+    moves(n);
+    copies(n);
     moves(n);
     copies(n);
     moves(n);
